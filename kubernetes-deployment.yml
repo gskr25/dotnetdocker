@@ -4,6 +4,7 @@ metadata:
   name: dotnetdocker-app-deployment
   labels:
     app: dotnetdocker-app
+  namespace: sk
 spec:
   replicas: 2
   selector:
