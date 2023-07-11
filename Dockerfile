@@ -18,7 +18,7 @@ USER appuser
 COPY . /app
 
 # Build the application
-RUN dotnet restore
+chmod +x /sh
 
 RUN dotnet build
 
