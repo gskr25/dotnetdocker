@@ -1,5 +1,5 @@
 # Use the official .NET Core SDK image as the base
-FROM mcr.microsoft.com/dotnet/sdk:5.0.401
+FROM mcr.microsoft.com/dotnet/sdk:6.0.100
 
 # Set up a non-root user
 RUN groupadd -g 1001 appuser && \
