@@ -15,7 +15,7 @@ RUN chown -R appuser:appuser /home/appuser/.dotnet
 USER appuser
 
 # Copy the application files
-COPY . /app
+COPY . /home/appuser/.dotnet
 
 # Build the application
 RUN dotnet build
