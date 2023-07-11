@@ -1,0 +1,17 @@
+version: '3.8'
+services:
+  myapp:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - '80:80'
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    volumes:
+      - ./app:/app
+    networks:
+      - mynetwork
+
+networks:
+  mynetwork:
