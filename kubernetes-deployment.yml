@@ -17,6 +17,6 @@ spec:
     spec:
       containers:
       - name: dotnetdocker-app
-        image: dotnetdocker-app:6.0.20
+        image: saikirangannu/sk:latest
         ports:
         - containerPort: 5000
