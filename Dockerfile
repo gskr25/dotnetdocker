@@ -15,9 +15,11 @@ RUN chown -R appuser:appuser /app
 USER appuser
 
 # Copy the application files
-COPY ./app
+COPY . /app
 
 # Build the application
+RUN dotnet restore
+
 RUN dotnet build
 
 # Expose the necessary port
