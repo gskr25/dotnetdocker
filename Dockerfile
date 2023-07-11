@@ -1,29 +1,27 @@
-# Use the official .NET Core SDK image as the base
-FROM mcr.microsoft.com/dotnet/sdk:6.0.100
-
-# Set up a non-root user
-RUN groupadd -g 1001 appuser && \
-    useradd -r -u 1001 -g appuser appuser
-
-# Set the working directory
+FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /app
 
-# Change ownership of the working directory to the appuser
-RUN chown -R appuser:appuser /app
+RUN apt-get update && \
+    curl -sL https://deb.nodesource.com/setup_16.x | bash - && \
+    apt-get -y install nodejs
 
-# Switch to the appuser
-USER appuser
+COPY . ./
+RUN dotnet restore && \
+    dotnet build "dotnet6.csproj" -c Release && \
+    dotnet publish "dotnet6.csproj" -c Release -o publish
 
-# Copy the application files
-COPY . /app
 
-# Build the application
-chmod +x /sh
+FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
+WORKDIR /app
+COPY --from=build /app/publish .
 
-RUN dotnet build
+ENV ASPNETCORE_URLS http://*:5000
 
-# Expose the necessary port
-EXPOSE 80
+RUN groupadd -r sai && \
+    useradd -r -g sai -s /bin/false sai && \
+    chown -R sai:sai /app
 
-# Start the application
-CMD ["dotnet", "run"]
+USER sai 
+
+EXPOSE 5000
+ENTRYPOINT ["dotnet", "dotnet6.dll"]
