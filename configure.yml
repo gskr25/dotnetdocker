@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: dotnetdocker-app-deployment
+  namespace: sk
+data:
+  DB_HOST: key
+  # Add other configuration key-value pairs as needed
