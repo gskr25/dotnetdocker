@@ -1,0 +1,16 @@
+# network-policy.yml
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: dotnetdocker-app-network-policy
+spec:
+  podSelector:
+    matchLabels:
+      app: dotnetdocker-app
+  policyTypes:
+  - Ingress
+  ingress:
+  - from:
+    - podSelector:
+        matchLabels:
+          role: backend
