@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dotnetdocker-app-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: dotnetdocker-app
+  template:
+    metadata:
+      labels:
+        app: dotnetdocker-app
+    spec:
+      containers:
+      - name: dotnetdocker-app
+        image: kiransk.azurecr.io/dotnetdocker-app:latest
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: aks-agentpool-86156304-vmss000000
+                operator: In
+                values:
+                - dotnet
+
