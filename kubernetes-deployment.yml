@@ -4,7 +4,7 @@ metadata:
   name: dotnetdocker-app-deployment
   namespace: sk
   labels:
-    app: dotnetdocker-app 
+    app: dotnetdocker-app
 spec:
   replicas: 2
   selector:
@@ -20,35 +20,37 @@ spec:
       labels:
         app: dotnetdocker-app
     spec:
-      initContainers:
-      - name: init-setup
-        image: busybox:latest
-        command: ['sh', '-c', 'ls; pwd; sleep 10']
-        envFrom:
-        - configMapRef:
-            name: dotnetdocker-app-deployment
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: env
+                    operator: In
+                    values:
+                      - prod
       containers:
-      - name: dotnetdocker-app
-        image: kiransk.azurecr.io/dotnetdocker-app:latest
-        ports:
-        - containerPort: 5000
-        livenessProbe:
-          httpGet:
-            path: /_status/healthz
-            port: 5000   # Corrected port to match the containerPort
-          initialDelaySeconds: 8
-          periodSeconds: 10
-          failureThreshold: 3  # Corrected field name
-          successThreshold: 1  # Corrected field name
-        readinessProbe:
-          httpGet:
-            path: /readiness
-            port: 5000   # Corrected port to match the containerPort
-          initialDelaySeconds: 15
-          periodSeconds: 5
-        env:
-        - name: dotnetdocker-app-deployment
-          valueFrom:
-            configMapKeyRef:
-              key: DB_HOST
-              name: dotnetdocker-app-deployment
+        - name: dotnetdocker-app
+          image: kiransk.azurecr.io/dotnetdocker-app:latest
+          ports:
+            - containerPort: 5000
+          livenessProbe:
+            httpGet:
+              path: /_status/healthz
+              port: 5000
+            initialDelaySeconds: 8
+            periodSeconds: 10
+            failureThreshold: 3
+            successThreshold: 1
+          readinessProbe:
+            httpGet:
+              path: /readiness
+              port: 5000
+            initialDelaySeconds: 15
+            periodSeconds: 5
+          env:
+            - name: DB_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: dotnetdocker-app-deployment
+                  key: DB_HOST
