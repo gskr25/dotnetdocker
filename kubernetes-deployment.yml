@@ -54,7 +54,7 @@ spec:
                 configMapKeyRef:
                   name: dotnetdocker-app-deployment
                   key: DB_HOST
-       tolerations:
+      tolerations:
       - key: special
         operator: "Equal"
         value: "true"
