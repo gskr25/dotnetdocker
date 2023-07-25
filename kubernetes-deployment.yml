@@ -55,7 +55,7 @@ spec:
                   name: dotnetdocker-app-deployment
                   key: DB_HOST
        tolerations:
-        - key: special
+      - key: special
         operator: "Equal"
         value: "true"
         effect: "NoSchedule"            
