@@ -1,0 +1,10 @@
+apiVersion: policy/v1beta1
+kind: PodDisruptionBudget
+metadata:
+  name: dotnetdocker-app-pdb
+  namespace: sk
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      app: dotnetdocker-app
