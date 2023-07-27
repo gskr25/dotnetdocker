@@ -29,6 +29,15 @@ spec:
                     operator: In
                     values:
                       - prod
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchExpressions:
+                  - key: app
+                    operator: In
+                    values:
+                      - dotnetdocker-app
+              topologyKey: "kubernetes.io/hostname"              
       containers:
         - name: dotnetdocker-app
           image: kiransk.azurecr.io/dotnetdocker-app:latest
