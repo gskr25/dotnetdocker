@@ -19,7 +19,7 @@ variables:
   imagePullSecret: 'kiransk10299189-auth'
 
   # Agent VM image name
-  vmImageName: 'saiagent'
+  vmImageName: 'sai'
 
 
 stages:
